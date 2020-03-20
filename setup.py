@@ -38,6 +38,13 @@
 # Conversion to use setuptools instead of disutils to make it compatible with pip
 
 from setuptools import setup, find_packages
+from setuptools.command.install import install
+import subprocess
+
+class InstallMatlabRuntime(install):
+    def run(self):
+        subprocess.call(['./install_matlab_runtime.sh'])
+        install.run(self)
 
 setup(
     name="ScanMatchPy",
@@ -47,4 +54,5 @@ setup(
         'ScanMatchPy'
     ],
     package_data={'ScanMatchPy': ['*.ctf']},
+    cmdclass={'install': InstallMatlabRuntime},
 )
